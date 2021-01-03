@@ -9,10 +9,14 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        List{
-            MoveRow(moveName: "Fast and Furious", mainCharacters: ["Vin Diesel","John Cena","Michelle Rodriguez"], moveImage: "f9")
-            MoveRow(moveName: "Limitless", mainCharacters: ["Bradley Cooper","Abbie Cornish","Robert De Niro"], moveImage: "limitless")
-            MoveRow(moveName: "The Expendables", mainCharacters: ["Sylvester Stallone","Jason Statham","Jet Li"], moveImage: "expendables")
+        NavigationView{
+            List(movies){ movie in
+                NavigationLink(
+                    destination: MovieDetailsView(movie: movie),
+                    label: {
+                        MovieRow(movie: movie)
+                    })
+            }.navigationTitle("Movies")
         }
     }
 }
@@ -23,19 +27,18 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
-struct MoveRow: View {
-    let moveName:String
-    let mainCharacters : [String]
-    let moveImage :String
+struct MovieRow: View {
+    let movie:Movie
+    
     
     var body: some View {
         HStack{
-            Image(moveImage).resizable()
+            Image(movie.name).resizable()
                 .scaledToFit().frame(height :100).clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
             
             VStack(alignment: .leading){
-                Text(moveName).font(.largeTitle)
-                Text(mainCharacters.joined(separator: ", "))
+                Text(movie.name).font(.largeTitle)
+                Text(movie.characters.joined(separator: ", "))
             }
         }
     }
